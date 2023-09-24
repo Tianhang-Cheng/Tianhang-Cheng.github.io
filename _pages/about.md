@@ -20,4 +20,4 @@ Hey, thanks for stopping by! 👋
 
 I am currently a second-year master student in the Department of Computer Science, [University of Illinois Urbana-Champaign](https://illinois.edu/) (UIUC), supervised by Prof. [Shenlong Wang](https://shenlong.web.illinois.edu/) and Prof. [Kaiyu Guan](http://faculty.nres.illinois.edu/~kaiyuguan/). My research interest lies in 3D reconstruction and 3D generation.
 
-Previously, I graduated from [Zhejiang University](https://www.zju.edu.cn/) in 2022 with a B.Eng. degree from the Department of Optical Science and Engineering and CHU KOCHEN Honors College, ranking in the top 5% (GPA:89.3). I won a National Scholarship (top 1%) in 2018.
+Previously, I graduated from [Zhejiang University](https://en.wikipedia.org/wiki/Zhejiang_University) in 2022 with a B.Eng. degree from the Department of Optical Science and Engineering and CHU KOCHEN Honors College, ranking in the top 5% (GPA:89.3). I won a National Scholarship (top 1%) in 2018.
