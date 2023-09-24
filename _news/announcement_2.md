@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-One paper get accepted by NeurIPS.
+One paper got accepted by NeurIPS.
