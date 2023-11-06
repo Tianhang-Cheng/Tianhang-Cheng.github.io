@@ -1,6 +1,6 @@
 ---
 layout: page
-title: project 3
+title: NeuS-friendly
 description: A fork of NeuS that is friendly to custom data using colmap.
 img: assets/img/3.png
 redirect: https://github.com/Tianhang-Cheng/NeuS_friendly
