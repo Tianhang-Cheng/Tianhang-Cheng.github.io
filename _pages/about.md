@@ -22,4 +22,4 @@ My name is Tianhang Cheng (程天航), currently a second-year master student in
 
 Previously, I graduated from [Zhejiang University](https://en.wikipedia.org/wiki/Zhejiang_University) in 2022 with a B.Eng. degree from the Department of Optical Science and Engineering and CHU KOCHEN Honors College, ranking in the top 5% (GPA:89.3). I won a National Scholarship (top 1%) in 2018.
 
-I'm actively applying for a Ph.D. position in 2024 Fall! I am also looking for 2024 summer internship or 2024 fall new grad job opportunities!
+I'm actively applying for a Ph.D. position in 2024 Fall!
