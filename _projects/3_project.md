@@ -5,7 +5,7 @@ description: A fork of NeuS that is friendly to custom data using colmap.
 img: assets/img/3.png
 redirect: https://github.com/Tianhang-Cheng/NeuS_friendly
 importance: 3
-category: work
+category: implement
 ---
 
 Every project has a beautiful feature showcase page.

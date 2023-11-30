@@ -4,8 +4,8 @@ title: Awesome conditional 3D generation
 description: A collection of papers in conditional (text/mesh/image) to 3D generation. 
 img: assets/img/proj2.png
 redirect: https://github.com/Tianhang-Cheng/Tianhang-Cheng.github.io/tree/master/assets/pdf/2-Conditional-3D-Generation.pdf
-importance: 3
-category: work
+importance: 2
+category: survey
 ---
 
 Every project has a beautiful feature showcase page.
