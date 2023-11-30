@@ -2,8 +2,9 @@
 layout: page
 title: Awesome 3D generation
 description: A slide that collect papers in conditional (text/mesh/image) to 3D generation. 
-img: assets/img/proj2.png
-redirect: https://drive.google.com/file/d/1ROOiCY80wViTe9U9PooVpa4ecHmWxwmW/view?usp=sharing
+img: assets/img/proj1.png
+redirect:
+permlink: assets/pdf/CV_v9.pdf
 importance: 2
 category: survey
 ---
