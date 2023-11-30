@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Awesome conditional 3D generation
-description: A collection of papers in conditional (text/mesh/image) to 3D generation. 
+title: Awesome 3D generation
+description: A slide that collect papers in conditional (text/mesh/image) to 3D generation. 
 img: assets/img/proj2.png
 redirect: https://github.com/Tianhang-Cheng/Tianhang-Cheng.github.io/tree/master/assets/pdf/2-Conditional-3D-Generation.pdf
 importance: 2
