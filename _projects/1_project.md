@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Awesome 3D generation
-description: A slide that collect papers in conditional (text/mesh/image) to 3D generation. 
+title: Awesome inverse rendering
+description: A slide that collect papers in multi-view inverse rendering.
 img: assets/img/proj1.png
 redirect:
 permlink: assets/pdf/CV_v9.pdf
