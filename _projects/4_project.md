@@ -5,7 +5,7 @@ description: A non-photorealistic video about Genshin Impact.
 img: assets/img/keli.png
 redirect: https://www.bilibili.com/video/BV1oN4y14755/?spm_id_from=333.999.0.0&vd_source=645ce6054f1e7b502d971f2a938d200e
 importance: 1
-category: Interest
+category: interest
 ---
 
 Every project has a beautiful feature showcase page.
