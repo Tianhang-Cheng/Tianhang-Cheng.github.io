@@ -2,6 +2,14 @@
   - firstname: ["Shenlong"]
     url: https://shenlong.web.illinois.edu/
 
+"Ma":
+  - firstname: ["Wei-Chiu"]
+    url: https://www.cs.cornell.edu/~weichiu/
+
+"Guan":
+  - firstname: ["Kaiyu"]
+    url: http://faculty.nres.illinois.edu/~kaiyuguan/
+
 "Adams":
   - firstname: ["Edwin", "E.", "E. P.", "Edwin Plimpton"]
     url: https://en.wikipedia.org/wiki/Edwin_Plimpton_Adams
