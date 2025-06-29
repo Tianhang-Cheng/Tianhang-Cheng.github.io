@@ -10,6 +10,14 @@
   - firstname: ["Kaiyu"]
     url: http://faculty.nres.illinois.edu/~kaiyuguan/
 
+"Zhai":
+  - firstname: ["Albert J."]
+    url: https://ajzhai.github.io/
+
+"Cheng":
+  - firstname: ["Tianhang"]
+    url: https://tianhang-cheng.github.io/
+
 "Adams":
   - firstname: ["Edwin", "E.", "E. P.", "Edwin Plimpton"]
     url: https://en.wikipedia.org/wiki/Edwin_Plimpton_Adams
