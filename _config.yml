@@ -209,6 +209,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - vendor
+  - Demeter
 keep_files:
   - CNAME
   - .nojekyll
