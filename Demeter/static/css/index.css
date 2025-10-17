@@ -177,7 +177,7 @@ body {
 
 .pca-image-wrapper {
   width: 100%;
-  height: 200px;
+  height: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -397,7 +397,7 @@ body {
 
 .fit-viewer {
   width: 100%;
-  height: 360px;
+  height: 450px;
   background: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -524,7 +524,7 @@ body {
 
 .pca-image-wrapper-3d-leaf {
   width: 100%;
-  height: 200px;
+  height: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -597,7 +597,7 @@ body {
 
 .pca-image-wrapper-3d-stem {
   width: 100%;
-  height: 200px;
+  height: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -802,5 +802,77 @@ body {
   
   .overview-image {
     max-height: 300px;
+  }
+}
+
+/* 3D Reconstruction Viewer Styles */
+.reconstruction-viewer-container {
+  background: #f5f5f5;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 10px 0 30px 0;
+}
+
+.reconstruction-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.reconstruction-viewer {
+  width: 100%;
+  height: 400px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+}
+
+.reconstruction-viewer:active {
+  cursor: grabbing;
+}
+
+.reconstruction-help {
+  color: #666;
+  margin-top: 8px;
+}
+
+.reconstruction-folder-btn {
+  border-radius: 8px;
+  background: linear-gradient(135deg, #f8fafc, #eef2f7);
+  border: 1px solid #e2e8f0;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+  padding: 8px 14px;
+}
+
+.reconstruction-folder-btn.is-active {
+  border-color: #3273dc;
+  background: linear-gradient(135deg, #e9f0ff, #f3f7ff);
+  box-shadow: 0 6px 16px rgba(50, 115, 220, 0.2);
+}
+
+.reconstruction-folder-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Responsive design for reconstruction viewer */
+@media (max-width: 768px) {
+  .reconstruction-viewer {
+    height: 300px;
+  }
+  
+  .fit-viewer {
+    height: 350px;
+  }
+  
+  .pca-image-wrapper,
+  .pca-image-wrapper-3d-leaf,
+  .pca-image-wrapper-3d-stem {
+    height: 220px;
   }
 }

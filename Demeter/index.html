@@ -87,7 +87,7 @@
 
 <section class="hero">
   <div class="hero-body">
-    <div class="container is-max-desktop">
+    <div class="container is-max-widescreen">
       <div class="columns is-centered">
         <div class="column has-text-centered">
           <h1 class="title is-1 publication-title">Demeter: A Parametric Model of Plant Morphology from the Real World</h1>
@@ -181,12 +181,12 @@
               </span> -->
               <!-- Code Link. -->
               <span class="link-block">
-                <a href=""
+                <a href="https://github.com/Tianhang-Cheng/Demeter"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-github"></i>
                   </span>
-                  <span>Code (Coming Soon)</span>
+                  <span>Code </span>
                   </a>
               </span>
               <!-- Dataset Link. -->
@@ -344,9 +344,26 @@
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3">3D Representation for Crop Plants</h2>
+        
+        
+        <!-- Soybean Gallery -->
+        <div class="soybean-gallery">
+          <div class="columns is-vcentered">
+            <div class="column is-full has-text-centered">
+              <img id="soybean-image" src="./static/fitting_3d/static.png" alt="Soybean", style="width: 80%; height: auto;"/>
+              <p class="has-text-centered" style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                This image shows the 3D fitting results for soybean plants, demonstrating our parametric model's ability to accurately reconstruct plant geometry from input images.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--/ Soybean Gallery -->
+
+        <br/><br/>
+        
         <div class="content has-text-justified">
           <p>
-            Select a soybean sample to view the input image, ground-truth point cloud, and reconstructed mesh.
+            Select plant sample to view the input image, ground-truth point cloud, and reconstructed mesh.
           </p>
         </div>
 
@@ -361,6 +378,57 @@
             </div>
             <div class="column is-narrow">
               <button class="button soybean-fit-btn is-light" data-fit-id="3">Soybean 3</button>
+            </div>
+            <div class="column is-narrow">
+              <button class="button soybean-fit-btn is-light" data-fit-id="4">Soybean 4</button>
+            </div>
+            <div class="column is-narrow">
+              <button class="button soybean-fit-btn is-light" data-fit-id="5">Soybean 5</button>
+            </div>
+            <div class="column is-narrow">
+              <button class="button soybean-fit-btn is-light" data-fit-id="6">Soybean 6</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Ribes Selector Buttons -->
+        <div class="species-selector" style="margin-top: 1rem;">
+          <div class="columns is-mobile is-centered">
+            <div class="column is-narrow">
+              <button class="button ribes-fit-btn is-light" data-fit-id="1">Ribes 1</button>
+            </div>
+            <div class="column is-narrow">
+              <button class="button ribes-fit-btn is-light" data-fit-id="2">Ribes 2</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Maize Selector Buttons -->
+        <div class="species-selector" style="margin-top: 1rem;">
+          <div class="columns is-mobile is-centered">
+            <div class="column is-narrow">
+              <button class="button maize-fit-btn is-light" data-fit-id="1">Maize 1</button>
+            </div>
+            <div class="column is-narrow">
+              <button class="button maize-fit-btn is-light" data-fit-id="2">Maize 2</button>
+            </div>
+            <div class="column is-narrow">
+              <button class="button maize-fit-btn is-light" data-fit-id="3">Maize 3</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Tobacco Selector Buttons -->
+        <div class="species-selector" style="margin-top: 1rem;">
+          <div class="columns is-mobile is-centered">
+            <div class="column is-narrow">
+              <button class="button tobacco-fit-btn is-light" data-fit-id="1">Tobacco 1</button>
+            </div>
+            <div class="column is-narrow">
+              <button class="button tobacco-fit-btn is-light" data-fit-id="2">Tobacco 2</button>
+            </div>
+            <div class="column is-narrow">
+              <button class="button tobacco-fit-btn is-light" data-fit-id="3">Tobacco 3</button>
             </div>
           </div>
         </div>
@@ -399,6 +467,8 @@
             </div>
           </div>
         </div>
+        
+
 
       </div>
     </div>
@@ -698,35 +768,103 @@
     </div>
     <!--/ Learning From Real World Data. -->
 
-
-
-
     <!-- Application-->
      <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3">Application</h2>
 
-        <!-- Texture Extraction and Transfer. -->
-        <h3 class="title is-4">Texture Extraction and Transfer</h3>
+
+        <!-- Model Editing. -->
+        <h3 class="title is-4">Model Editing</h3>
         <div class="content has-text-justified">
           <p>
-            We can extract the texture from the real-world leaf scans, and transfer to other leaf shapes.
+            We can edit the model by changing the parameters.
           </p>
-          <img src="./static/images/texture.png" alt="Parameters" style="max-width: 100%; height: auto;">
         </div>
-        <!--/ Texture Extraction and Transfer. -->
+        <!--/ Model Editing. -->
 
-        <br/><br/>
-
-        <!-- Deformation Transfer. -->
-        <h3 class="title is-4">Deformation Transfer</h3>
+        <!-- Reconstruction from Raw Point Cloud. -->
+        <h3 class="title is-4">Reconstruction from Raw Point Cloud</h3>
         <div class="content has-text-justified">
           <p>
-            We can transfer the deformation from one leaf to another.
+            We reconstruct the 3D model from the real-world data. We first use pretrained point-transformer to predict the segmentation for the input point cloud,
+            then fit each segment to the parametric model. Here the input point cloud is downsampled from the original point cloud for better visualization.
           </p>
-          <!-- <img src="./static/images/photo.png" alt="Parameters" style="max-width: 100%; height: auto;"> -->
+          <!-- 3D Reconstruction Viewer -->
+          <div class="reconstruction-viewer-container">
+            <!-- Folder Selector -->
+            <div class="folder-selector has-text-centered" style="margin-bottom: 1rem;">
+              <div class="buttons has-addons is-centered">
+                <button class="button reconstruction-folder-btn is-light is-active" data-folder="15_i">
+                  <span class="icon">
+                    <i class="fas fa-folder"></i>
+                  </span>
+                  <span>15_i</span>
+                </button>
+                <button class="button reconstruction-folder-btn is-light" data-folder="27_o">
+                  <span class="icon">
+                    <i class="fas fa-folder"></i>
+                  </span>
+                  <span>27_o</span>
+                </button>
+                <button class="button reconstruction-folder-btn is-light" data-folder="65_i">
+                  <span class="icon">
+                    <i class="fas fa-folder"></i>
+                  </span>
+                  <span>65_i</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 3D Viewers Grid -->
+            <div class="columns is-multiline">
+              <!-- Ground Truth -->
+              <div class="column is-3">
+                <h4 class="title is-6 has-text-centered">Input</h4>
+                <div class="reconstruction-card">
+                  <div class="reconstruction-viewer" id="reconstruction-gt-viewer">
+                    <div class="viewer-loading">Loading ground truth...</div>
+                  </div>
+                  <p class="has-text-centered reconstruction-help"><small>Drag to rotate • Scroll to zoom</small></p>
+                </div>
+              </div>
+
+              <!-- L-system -->
+              <div class="column is-3">
+                <h4 class="title is-6 has-text-centered">L-system</h4>
+                <div class="reconstruction-card">
+                  <div class="reconstruction-viewer" id="reconstruction-lsys-viewer">
+                    <div class="viewer-loading">Loading L-system...</div>
+                  </div>
+                  <p class="has-text-centered reconstruction-help"><small>Drag to rotate • Scroll to zoom</small></p>
+                </div>
+              </div>
+
+              <!-- NKSR -->
+              <div class="column is-3">
+                <h4 class="title is-6 has-text-centered">NKSR</h4>
+                <div class="reconstruction-card">
+                  <div class="reconstruction-viewer" id="reconstruction-nksr-viewer">
+                    <div class="viewer-loading">Loading NKSR...</div>
+                  </div>
+                  <p class="has-text-centered reconstruction-help"><small>Drag to rotate • Scroll to zoom</small></p>
+                </div>
+              </div>
+
+              <!-- Our Model -->
+              <div class="column is-3">
+                <h4 class="title is-6 has-text-centered">Our Model</h4>
+                <div class="reconstruction-card">
+                  <div class="reconstruction-viewer" id="reconstruction-our-viewer">
+                    <div class="viewer-loading">Loading our model...</div>
+                  </div>
+                  <p class="has-text-centered reconstruction-help"><small>Drag to rotate • Scroll to zoom</small></p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <!--/ Deformation Transfer. -->
+        <!--/ Reconstruction from Raw Point Cloud. -->
 
         <br/><br/>
 
@@ -734,27 +872,45 @@
         <h3 class="title is-4">Photosynthesis Simulation</h3>
         <div class="content has-text-justified">
           <p>
-            We can simulate the photosynthesis with the output mesh from Demeter in Helios.
+            We can simulate the photosynthesis with the output mesh from Demeter in <a href="https://plantsimulationlab.github.io/Helios/">Helios</a>.
           </p>
-          <img src="./static/images/photo.png" alt="Parameters" style="max-width: 100%; height: auto;">
+          <video controls loop>
+            <source src="./static/videos/photosynthesis.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
         </div>
         <!--/ Photosynthesis Simulation. -->
 
         <br/><br/>
 
-        <!-- Reconstruction from Raw Point Cloud. -->
-        <h3 class="title is-4">Reconstruction from Raw Point Cloud</h3>
-        <div class="content has-text-justified">
-          <p>
-            We can reconstruct the 3D model from the real-world data.
-          </p>
-        </div>
-        <!--/ Reconstruction from Raw Point Cloud. -->
+
 
 
       </div>
      </div>
      <!--/ Application -->
+
+
+     <!-- Assets Generation-->
+     <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Assets Generation</h2>
+
+          <!-- Texture Extraction and Transfer. -->
+          <h3 class="title is-4">Texture Extraction and Transfer</h3>
+          <div class="content has-text-justified">
+            <p>
+              We can extract the texture from the real-world leaf scans, and transfer to other leaf shapes.
+            </p>
+            <img src="./static/images/texture.png" alt="Parameters" style="max-width: 100%; height: auto;">
+          </div>
+          <!--/ Texture Extraction and Transfer. -->
+
+          <br/><br/>
+
+      </div>
+     </div>
+     <!--/ Assets Generation-->
 
 
     <!-- Concurrent Work. -->

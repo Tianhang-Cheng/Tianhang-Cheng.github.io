@@ -204,6 +204,7 @@ var rotationX = 0, rotationY = 0;
 // Soybean Fitting Results viewers
 var soyfitState = {
   currentId: '1',
+  currentSpecies: 'soybean',
   pcd: null,
   mesh: null,
   viewers: {
@@ -775,6 +776,261 @@ function setupOverviewKeyboardNavigation() {
   });
 }
 
+// ---------- 3D Reconstruction Viewer ----------
+var reconstructionState = {
+  currentFolder: '15_i',
+  viewers: {
+    gt: null,
+    lsys: null,
+    nksr: null,
+    our: null
+  },
+  meshes: {
+    gt: null,
+    lsys: null,
+    nksr: null,
+    our: null
+  },
+  isDragging: {
+    gt: false,
+    lsys: false,
+    nksr: false,
+    our: false
+  },
+  lastMouse: { x: 0, y: 0 },
+  rotation: {
+    gtX: -1.5, gtY: 0,
+    lsysX: -1.5, lsysY: 0,
+    nksrX: -1.5, nksrY: 0,
+    ourX: -1.5, ourY: 0
+  }
+};
+
+function initReconstructionViewers() {
+  // Create viewers for each method
+  reconstructionState.viewers.gt = createReconstructionViewer('reconstruction-gt-viewer');
+  reconstructionState.viewers.lsys = createReconstructionViewer('reconstruction-lsys-viewer');
+  reconstructionState.viewers.nksr = createReconstructionViewer('reconstruction-nksr-viewer');
+  reconstructionState.viewers.our = createReconstructionViewer('reconstruction-our-viewer');
+
+  // Load initial meshes
+  loadReconstructionMeshes();
+
+  // Add controls
+  addReconstructionControls('gt');
+  addReconstructionControls('lsys');
+  addReconstructionControls('nksr');
+  addReconstructionControls('our');
+
+  // Start animation loops
+  animateReconstruction('gt');
+  animateReconstruction('lsys');
+  animateReconstruction('nksr');
+  animateReconstruction('our');
+}
+
+function createReconstructionViewer(containerId) {
+  var container = document.getElementById(containerId);
+  if (!container) return null;
+  
+  container.innerHTML = '';
+  
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(60, container.offsetWidth / container.offsetHeight, 0.01, 1000);
+  var renderer = new THREE.WebGLRenderer({ antialias: true });
+  
+  renderer.setSize(container.offsetWidth, container.offsetHeight);
+  renderer.setClearColor(0xf9f9f9);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  container.appendChild(renderer.domElement);
+
+  // Add lighting - brighter setup
+  var ambientLight = new THREE.AmbientLight(0x404040, 1.2);
+  scene.add(ambientLight);
+  
+  var directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+  directionalLight.position.set(2, 4, 3);
+  directionalLight.castShadow = true;
+  directionalLight.shadow.mapSize.width = 1024;
+  directionalLight.shadow.mapSize.height = 1024;
+  scene.add(directionalLight);
+  
+  // Add additional light sources for better illumination
+  var directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.6);
+  directionalLight2.position.set(-2, -4, -3);
+  scene.add(directionalLight2);
+  
+  var hemisphereLight = new THREE.HemisphereLight(0x87CEEB, 0x98FB98, 0.4);
+  scene.add(hemisphereLight);
+
+  camera.position.set(0, 0, 3.5);
+  
+  return { scene: scene, camera: camera, renderer: renderer, container: container, object: null };
+}
+
+function reconstructionBasePath() {
+  return './static/reconstruction_3d/soybean/' + reconstructionState.currentFolder + '/';
+}
+
+function loadReconstructionMeshes() {
+  loadReconstructionMesh('gt', 'gt.ply');
+  loadReconstructionMesh('lsys', 'Lsys.ply');
+  loadReconstructionMesh('nksr', 'nksr.ply');
+  loadReconstructionMesh('our', 'our.ply');
+}
+
+function loadReconstructionMesh(method, filename) {
+  var viewer = reconstructionState.viewers[method];
+  if (!viewer) return;
+  
+  // Remove existing mesh
+  if (reconstructionState.meshes[method]) {
+    viewer.scene.remove(reconstructionState.meshes[method]);
+  }
+  
+  var loader = new THREE.PLYLoader();
+  loader.load(reconstructionBasePath() + filename, function(geometry) {
+    // Center and scale geometry
+    geometry.computeBoundingBox();
+    var center = geometry.boundingBox.getCenter(new THREE.Vector3());
+    geometry.translate(-center.x, -center.y, -center.z);
+    
+    var size = geometry.boundingBox.getSize(new THREE.Vector3());
+    var maxDim = Math.max(size.x, size.y, size.z);
+    var scale = 2.0 / maxDim;
+    geometry.scale(scale, scale, scale);
+    
+    var object;
+    
+    // Ground truth is a point cloud, others are meshes
+    if (method === 'gt') {
+      var material = new THREE.PointsMaterial({ 
+        size: 0.01, 
+        color: 0x888888,  // Gray color
+        vertexColors: true 
+      });
+      object = new THREE.Points(geometry, material);
+    } else {
+      var material = new THREE.MeshStandardMaterial({ 
+        color: 0x888888,  // Gray color for all methods
+        metalness: 0.0,   // Reduced metalness for brighter appearance
+        roughness: 0.3,   // Reduced roughness for more reflection
+        side: THREE.DoubleSide,
+        vertexColors: true
+      });
+      object = new THREE.Mesh(geometry, material);
+      object.castShadow = true;
+      object.receiveShadow = true;
+    }
+    
+    // Apply initial rotation
+    var rotXKey = method + 'X';
+    var rotYKey = method + 'Y';
+    object.rotation.x = reconstructionState.rotation[rotXKey];
+    object.rotation.y = reconstructionState.rotation[rotYKey];
+    
+    reconstructionState.meshes[method] = object;
+    viewer.object = object;
+    viewer.scene.add(object);
+    
+    // Hide loading text
+    var loading = viewer.container.querySelector('.viewer-loading');
+    if (loading) loading.style.display = 'none';
+    
+  }, undefined, function(error) {
+    console.error('Failed to load ' + filename, error);
+    var loading = viewer.container.querySelector('.viewer-loading');
+    if (loading) {
+      loading.textContent = 'Failed to load ' + method;
+      loading.style.color = '#ff3860';
+    }
+  });
+}
+
+function addReconstructionControls(method) {
+  var viewer = reconstructionState.viewers[method];
+  if (!viewer) return;
+  
+  var rotXKey = method + 'X';
+  var rotYKey = method + 'Y';
+  
+  viewer.container.addEventListener('mousedown', function(e) {
+    reconstructionState.isDragging[method] = true;
+    reconstructionState.lastMouse.x = e.clientX;
+    reconstructionState.lastMouse.y = e.clientY;
+    viewer.container.style.cursor = 'grabbing';
+  });
+  
+  viewer.container.addEventListener('mouseup', function() {
+    reconstructionState.isDragging[method] = false;
+    viewer.container.style.cursor = 'grab';
+  });
+  
+  viewer.container.addEventListener('mouseleave', function() {
+    reconstructionState.isDragging[method] = false;
+    viewer.container.style.cursor = 'grab';
+  });
+  
+  viewer.container.addEventListener('mousemove', function(e) {
+    if (!reconstructionState.isDragging[method] || !viewer.object) return;
+    
+    var dx = e.clientX - reconstructionState.lastMouse.x;
+    var dy = e.clientY - reconstructionState.lastMouse.y;
+    
+    reconstructionState.rotation[rotYKey] += dx * 0.01;
+    reconstructionState.rotation[rotXKey] += dy * 0.01;
+    reconstructionState.rotation[rotXKey] = Math.max(-Math.PI/2, Math.min(Math.PI/2, reconstructionState.rotation[rotXKey]));
+    
+    viewer.object.rotation.x = reconstructionState.rotation[rotXKey];
+    viewer.object.rotation.y = reconstructionState.rotation[rotYKey];
+    
+    reconstructionState.lastMouse.x = e.clientX;
+    reconstructionState.lastMouse.y = e.clientY;
+  });
+  
+  viewer.container.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    var zoom = (e.deltaY > 0) ? 1.1 : 0.9;
+    viewer.camera.position.multiplyScalar(zoom);
+    
+    var distance = viewer.camera.position.length();
+    if (distance < 1) viewer.camera.position.normalize().multiplyScalar(1);
+    if (distance > 20) viewer.camera.position.normalize().multiplyScalar(20);
+  }, { passive: false });
+}
+
+function animateReconstruction(method) {
+  var viewer = reconstructionState.viewers[method];
+  if (!viewer) return;
+  
+  function loop() {
+    requestAnimationFrame(loop);
+    
+    // Auto-rotate when not dragging
+    if (!reconstructionState.isDragging[method] && viewer.object) {
+      viewer.object.rotation.z += 0.005;
+    }
+    
+    viewer.renderer.render(viewer.scene, viewer.camera);
+  }
+  loop();
+}
+
+function resizeReconstructionViewers() {
+  var methods = ['gt', 'lsys', 'nksr', 'our'];
+  methods.forEach(function(method) {
+    var viewer = reconstructionState.viewers[method];
+    if (!viewer || !viewer.container) return;
+    
+    var width = viewer.container.offsetWidth;
+    var height = viewer.container.offsetHeight;
+    viewer.camera.aspect = width / height;
+    viewer.camera.updateProjectionMatrix();
+    viewer.renderer.setSize(width, height);
+  });
+}
+
 // ---------- Soybean Fitting Results ----------
 function initSoyfitViewers() {
   // Set image src
@@ -798,7 +1054,7 @@ function initSoyfitViewers() {
 }
 
 function soyfitBasePath() {
-  return './static/fitting_3d/soybean/' + soyfitState.currentId + '/';
+  return './static/fitting_3d/' + soyfitState.currentSpecies + '/' + soyfitState.currentId + '/';
 }
 
 function updateSoyfitImage() {
@@ -1133,6 +1389,7 @@ $(document).ready(function() {
       resize3DViewers();
       resizeSoybeanViewer();
       resizeSoyfitViewers();
+      resizeReconstructionViewers();
     });
 
     // Initialize soybean 3D viewer
@@ -1144,10 +1401,68 @@ $(document).ready(function() {
     // Wire soybean fit buttons
     $('.soybean-fit-btn').on('click', function(){
       var id = $(this).data('fit-id').toString();
-      if (id === soyfitState.currentId) return;
+      if (id === soyfitState.currentId && soyfitState.currentSpecies === 'soybean') return;
       $('.soybean-fit-btn').removeClass('is-active');
+      $('.ribes-fit-btn').removeClass('is-active');
+      $('.maize-fit-btn').removeClass('is-active');
+      $('.tobacco-fit-btn').removeClass('is-active');
       $(this).addClass('is-active');
       soyfitState.currentId = id;
+      soyfitState.currentSpecies = 'soybean';
+      updateSoyfitImage();
+      // Reset rotations
+      soyfitState.rotation = { pcdX: -1.5, pcdY: 0, meshX: -1.5, meshY: 0 };
+      loadSoyfitPCD();
+      loadSoyfitMesh();
+    });
+
+    // Wire ribes fit buttons
+    $('.ribes-fit-btn').on('click', function(){
+      var id = $(this).data('fit-id').toString();
+      if (id === soyfitState.currentId && soyfitState.currentSpecies === 'ribes') return;
+      $('.soybean-fit-btn').removeClass('is-active');
+      $('.ribes-fit-btn').removeClass('is-active');
+      $('.maize-fit-btn').removeClass('is-active');
+      $('.tobacco-fit-btn').removeClass('is-active');
+      $(this).addClass('is-active');
+      soyfitState.currentId = id;
+      soyfitState.currentSpecies = 'ribes';
+      updateSoyfitImage();
+      // Reset rotations
+      soyfitState.rotation = { pcdX: -1.5, pcdY: 0, meshX: -1.5, meshY: 0 };
+      loadSoyfitPCD();
+      loadSoyfitMesh();
+    });
+
+    // Wire maize fit buttons
+    $('.maize-fit-btn').on('click', function(){
+      var id = $(this).data('fit-id').toString();
+      if (id === soyfitState.currentId && soyfitState.currentSpecies === 'maize') return;
+      $('.soybean-fit-btn').removeClass('is-active');
+      $('.ribes-fit-btn').removeClass('is-active');
+      $('.maize-fit-btn').removeClass('is-active');
+      $('.tobacco-fit-btn').removeClass('is-active');
+      $(this).addClass('is-active');
+      soyfitState.currentId = id;
+      soyfitState.currentSpecies = 'maize';
+      updateSoyfitImage();
+      // Reset rotations
+      soyfitState.rotation = { pcdX: -1.5, pcdY: 0, meshX: -1.5, meshY: 0 };
+      loadSoyfitPCD();
+      loadSoyfitMesh();
+    });
+
+    // Wire tobacco fit buttons
+    $('.tobacco-fit-btn').on('click', function(){
+      var id = $(this).data('fit-id').toString();
+      if (id === soyfitState.currentId && soyfitState.currentSpecies === 'tobacco') return;
+      $('.soybean-fit-btn').removeClass('is-active');
+      $('.ribes-fit-btn').removeClass('is-active');
+      $('.maize-fit-btn').removeClass('is-active');
+      $('.tobacco-fit-btn').removeClass('is-active');
+      $(this).addClass('is-active');
+      soyfitState.currentId = id;
+      soyfitState.currentSpecies = 'tobacco';
       updateSoyfitImage();
       // Reset rotations
       soyfitState.rotation = { pcdX: -1.5, pcdY: 0, meshX: -1.5, meshY: 0 };
@@ -1157,6 +1472,30 @@ $(document).ready(function() {
 
     // Initialize Overview Image Viewer
     initOverviewViewer();
+
+    // Initialize 3D Reconstruction Viewers
+    initReconstructionViewers();
+
+    // Wire reconstruction folder buttons
+    $('.reconstruction-folder-btn').on('click', function(){
+      var folder = $(this).data('folder');
+      if (folder === reconstructionState.currentFolder) return;
+      
+      $('.reconstruction-folder-btn').removeClass('is-active');
+      $(this).addClass('is-active');
+      reconstructionState.currentFolder = folder;
+      
+      // Reset rotations
+      reconstructionState.rotation = {
+        gtX: -1.5, gtY: 0,
+        lsysX: -1.5, lsysY: 0,
+        nksrX: -1.5, nksrY: 0,
+        ourX: -1.5, ourY: 0
+      };
+      
+      // Reload all meshes
+      loadReconstructionMeshes();
+    });
 
 })
 
