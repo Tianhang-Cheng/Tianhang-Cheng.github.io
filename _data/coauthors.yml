@@ -57,6 +57,6 @@
   - firstname: ["Max"]
     url: https://en.wikipedia.org/wiki/Max_Planck
 
-"Benjamin":
-  - firstname: ["Ummenhofer"]
+"Ummenhofer":
+  - firstname: ["Benjamin"]
     url: https://lmb.informatik.uni-freiburg.de/people/ummenhof/

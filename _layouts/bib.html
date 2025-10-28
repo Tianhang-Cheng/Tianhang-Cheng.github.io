@@ -137,7 +137,7 @@
           {% if entry.abstract -%}
           <!-- Abstract block -->
           <div class="abstract">
-            <p>{{ entry.abstract }}</p>
+            <p>{% if entry.abstract contains 'TL;DR' %}{{ entry.abstract | replace: 'TL;DR', '<strong>TL;DR</strong>' }}{% else %}{{ entry.abstract }}{% endif %}</p>
           </div>
           {%- endif -%}
 

@@ -717,6 +717,14 @@ footer.sticky-bottom {
       div.abstract.hidden.open {
         border-color: var(--global-text-color);
       }
+
+      // Hide year background number
+      .col-sm-9::before {
+        display: none !important;
+      }
+      .col-sm-9::after {
+        display: none !important;
+      }
     }
   }
 }
