@@ -3,7 +3,7 @@ layout: page
 title: Demeter
 permalink: /Demeter/
 subtitle: A Parametric Model of Crop Plant Morphology from the Real World
-nav: true
+nav: false
 nav_order: 2
 description: Demeter - A Parametric Model of Plant Morphology from the Real World (ICCV 2025)
 ---
