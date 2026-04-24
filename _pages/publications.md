@@ -7,6 +7,8 @@ nav: true
 nav_order: 1
 ---
 <!-- _pages/publications.md -->
+<p class="text-muted small mb-3">* Equal contribution.</p>
+
 <div class="publications">
 
 {% bibliography -f {{ site.scholar.bibliography }} %}
